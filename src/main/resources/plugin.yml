@@ -1,0 +1,7 @@
+name: AnarchyAnticheat
+version: ${project.version}
+main: me.krymz0n.anarchyanticheat.Main
+api-version: 1.16
+authors: [ KRYMZ0N ]
+description: A light weight anti cheat plugin designed for anarchy servers
+website: www.3b3t.me
