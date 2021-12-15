@@ -26,11 +26,17 @@ public class Speed implements Listener {
 
         double distX = to.getX() - from.getX();
         double distZ = to.getZ() - from.getZ();
-        double finalValue = Math.atan2(distZ, distX) * Math.hypot(distX, distZ);
-        p.sendMessage(String.valueOf(finalValue));
+        double finalValue = Math.hypot(distX, distZ);
+        //p.sendMessage(String.valueOf(finalValue));
 
-        if (finalValue > 0.5 && !p.isJumping() && !p.isFlying() && !(p.getFallDistance() > 0)) {
-            //evt.setCancelled(true);
+            if (!p.isSprinting()) {
+                if (finalValue > p.getWalkSpeed()) {
+                    //evt.setCancelled(true);
+                }
+            } else {
+                if (finalValue > p.getWalkSpeed()) {
+                    //evt.setCancelled(true);
+                }
         }
     }
 }
