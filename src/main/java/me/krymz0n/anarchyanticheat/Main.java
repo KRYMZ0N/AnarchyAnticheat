@@ -19,7 +19,7 @@ public final class Main extends JavaPlugin implements Listener {
         pm.registerEvents(this, this);
         pm.registerEvents(new Fly(this), this);
         pm.registerEvents(new Speed(this), this);
-        pm.registerEvents(new BedrockBurrow(this), this);
+        //pm.registerEvents(new BedrockBurrow(this), this);
 
     }
 
