@@ -35,6 +35,7 @@ public class Utils {
     // --Checking block in a 1 block radius around the player--
     public boolean blockRadIsBlock(Location loc) {
         return !(loc.subtract(1, 0, 1).getBlock().getType() == Material.AIR) // Could iterate, but pretty sure this is efficient.
+                || !(loc.getBlock().getType() == Material.AIR)
                 || !(loc.subtract(1, 0, 0).getBlock().getType() == Material.AIR)
                 || !(loc.subtract(0, 0, 1).getBlock().getType() == Material.AIR)
                 || !(loc.add(1, 0, 1).getBlock().getType() == Material.AIR)
