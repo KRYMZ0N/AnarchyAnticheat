@@ -24,59 +24,68 @@ public class Fly implements Listener {
     @EventHandler
     public void onPlayerMovement(PlayerMoveEvent evt) {
         System.out.println("Event Called");
-        Player  p = evt.getPlayer();
-        Location loc = p.getLocation().subtract(0, 1, 0);
-        final Location prevLoc = loc;
-        Location newLoc = new Location(p.getWorld(), loc.getX(), loc.getY(), loc.getZ());
-        final Location clone = loc.clone().subtract(0, 1, 0); // Checking block underneath
+        Player p = evt.getPlayer();
 
-        // --since this event gets called by movement, we add the player to the set, and when called again we remove if false--
-        if (newLoc.getBlock().getType() == Material.AIR && !loc.getBlock().isBuildable() && !loc.getBlock().isSolid() && !(p.getFallDistance() > 0) && !(p.isOnGround())) {
-            System.out.println("added");
-            check.add(p); // add if in air
-        } else {
-            if (check.contains(p)) {
-                System.out.println("removed");
-                check.remove(p); // remove if not in the set on the next calls.
-            }
-        }
+        if (!p.isGliding()) {
+            Location loc = p.getLocation().subtract(0, 1, 0);
+            final Location prevLoc = loc;
+            Location newLoc = new Location(p.getWorld(), loc.getX(), loc.getY(), loc.getZ());
+            final Location clone = loc.clone().subtract(0, 1, 0); // Checking block underneath
 
-        if (check.contains(p)) {
-            System.out.println("contains");
-            new BukkitRunnable() {
-                public void run() { // running a task with a delay to try and prevent player from ascending.
-                    System.out.println("runnable");
-                    p.sendMessage(loc.getBlock().getType().toString());
-
-
-                    if (loc.getY() < clone.getY()) {
-                        check.remove(p);
-                    }
-
-                    if ((loc.getY() > clone.getY())
-                            && !(p.isJumping())
-                            && !(p.isSprinting())
-                            && !(u.isLeaves(loc.getBlock().getType()))
-                            && !(loc.getBlock().isBuildable())
-                            && !(loc.getBlock().isSolid())
-                            && !(p.getFallDistance() > 0)
-                            && !(p.isOnGround())
-                            && (p.getLocation().subtract(0, 2, 0).getBlock().getType() == Material.AIR))
-                            { // if player ascends cancel
-
-                        System.out.println("should be cancelled.");
-                        for(int y = prevLoc.getBlockY(); y > 0; y--) { // get current Y coordinate, go down until we hit bedrock (0)
-                            if(prevLoc.subtract(0, 1, 0).getBlock().getType() == Material.AIR) continue; // if the block is air, go to next
-                            p.teleport(prevLoc.add(0, 1, 0)); // teleport player to the block above, otherwise he would be stuck in the current one
-                            break; // stop the loop
-                        }
-                        check.remove(p);
-
-                    } else {
-                        check.remove(p);
-                    }
+            // --since this event gets called by movement, we add the player to the set, and when called again we remove if false--
+            if ((newLoc.getBlock().getType() == Material.AIR)
+                    && !(loc.getBlock().isBuildable())
+                    && !(loc.getBlock().isSolid())
+                    && !(u.blockRadIsBlock(loc))
+                    && !(p.getFallDistance() > 0)
+                    && !(p.isOnGround())) {
+                System.out.println("added");
+                check.add(p); // add if in air
+            } else {
+                if (check.contains(p)) {
+                    System.out.println("removed");
+                    check.remove(p); // remove if not in the set on the next calls.
                 }
-            }.runTaskLater(plugin, 30L);
+            }
+
+            if (check.contains(p)) {
+                System.out.println("contains");
+                new BukkitRunnable() {
+                    public void run() { // running a task with a delay to try and prevent player from ascending.
+                        System.out.println("runnable");
+                        p.sendMessage(loc.getBlock().getType().toString());
+
+
+                        if (loc.getY() < clone.getY()) {
+                            check.remove(p);
+                        }
+
+                        if ((loc.getY() > clone.getY())
+                                && !(p.isJumping())
+                                // --Getting blocks within a 1 block radius around players, and checking to make sure it's a solid block--
+                                && !(u.blockRadIsBlock(loc))
+                                && !(u.isLeaves(loc.getBlock().getType()))
+                                && !(loc.getBlock().isBuildable())
+                                && !(loc.getBlock().isSolid())
+                                && !(p.getFallDistance() > 0)
+                                && !(p.isOnGround())
+                                && (p.getLocation().subtract(0, 2, 0).getBlock().getType() == Material.AIR)) { // if player ascends cancel
+
+                            System.out.println("should be cancelled.");
+                            for (int y = prevLoc.getBlockY(); y > 0; y--) { // get current Y coordinate, go down until we hit bedrock (0)
+                                if (prevLoc.subtract(0, 1, 0).getBlock().getType() == Material.AIR)
+                                    continue; // if the block is air, go to next
+                                p.teleport(prevLoc.add(0, 1, 0)); // teleport player to the block above, otherwise he would be stuck in the current one
+                                break; // stop the loop
+                            }
+                            check.remove(p);
+
+                        } else {
+                            check.remove(p);
+                        }
+                    }
+                }.runTaskLater(plugin, 30L);
+            }
         }
     }
 }
