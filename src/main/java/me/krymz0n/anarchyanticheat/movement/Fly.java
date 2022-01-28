@@ -66,6 +66,7 @@ public class Fly implements Listener {
                                 && !(loc.getBlock().isSolid())
                                 && !(p.getFallDistance() > 0)
                                 && !(p.isOnGround())
+                                && (loc.subtract(0, 1, 0).getBlock().getType() == Material.AIR)
                                 && (p.getLocation().subtract(0, 6, 0).getBlock().getType() == Material.AIR)) { // if player ascends cancel
 
                             p.sendMessage("passed test, now cancelling");
