@@ -17,10 +17,14 @@ public class Reload implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (label.equalsIgnoreCase("aac") && args.length == 0) { // Checking label instead of argument to fix an error
+            sender.sendMessage(ChatColor.BLUE + "This server is currently running AnarchyAntiCheat " + ChatColor.GRAY + "v" + ChatColor.BLUE + plugin.getDescription().getVersion());
+            return true;
+        }
         if (args[0].equalsIgnoreCase("reload")) {
             if (sender.isOp() || (!(sender instanceof Player))) {
                 plugin.reloadConfig();
-                sender.sendMessage(ChatColor.GREEN + "AnarchyAntiCheat Config Reloaded!");
+                sender.sendMessage(ChatColor.BLUE + "AnarchyAntiCheat Config Reloaded!");
                 return true;
             } else {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to execute this command!");
@@ -28,15 +32,8 @@ public class Reload implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("ver")) {
-            sender.sendMessage(ChatColor.GREEN + "This server is currently running AnarchyAntiCheat " + ChatColor.GRAY + "v" + ChatColor.GREEN + plugin.getDescription().getVersion());
-        }
-
-        if (label.equalsIgnoreCase("aac")) { // Checking label instead of argument to fix an error
-            sender.sendMessage(ChatColor.GREEN + "This server is currently running AnarchyAntiCheat " + ChatColor.GRAY + "v" + ChatColor.GREEN + plugin.getDescription().getVersion());
-        }
-
-        if (args[0].equalsIgnoreCase("test")) {
-            sender.sendMessage("WOrks");
+            sender.sendMessage(ChatColor.BLUE + "This server is currently running AnarchyAntiCheat " + ChatColor.GRAY + "v" + ChatColor.BLUE+ plugin.getDescription().getVersion());
+            return true;
         }
         return false;
     }

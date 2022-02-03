@@ -17,7 +17,6 @@ public class BedrockBurrow implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent evt) {
-        evt.getPlayer().sendMessage("Called");
         if (plugin.getConfig().getBoolean("PreventBurrow")) {
             Location loc = evt.getPlayer().getLocation();
             int x = loc.getBlockX();
@@ -25,9 +24,8 @@ public class BedrockBurrow implements Listener {
             int z = loc.getBlockZ();
             Material b = evt.getPlayer().getLocation().getWorld().getBlockAt(x, y, z).getType();
 
-            evt.getPlayer().sendMessage("config working");
-            if (!(b.equals(Material.AIR)
-                    && (b.isOccluding()))) {
+            if (!b.equals(Material.AIR)
+                    && b.isOccluding()) {
 
                 evt.getPlayer().damage((float) plugin.getConfig().getInt("BurrowDamageAmp") * 0.5);
             }
