@@ -1,0 +1,8 @@
+# AnarchyAntiCheat
+PatchFlight: true # Prevent flying
+
+PreventBurrow: true # Prevent players from going inside of blocks
+BurrowDamageAmp: 2 # 1 = half a heart
+
+LimitCrystalAura: false
+CrystalDelay: 10 # This is in ticks, 1 second = 20
