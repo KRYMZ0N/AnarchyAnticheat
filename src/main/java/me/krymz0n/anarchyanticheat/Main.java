@@ -24,7 +24,7 @@ public final class Main extends JavaPlugin implements Listener {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
         pm.registerEvents(new Fly(this), this);
-        //pm.registerEvents(new Speed(this), this);
+        pm.registerEvents(new Speed(this), this);
         pm.registerEvents(new BedrockBurrow(this), this);
         pm.registerEvents(new CrystalAura(this), this);
 

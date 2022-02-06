@@ -33,7 +33,7 @@ public class Fly implements Listener {
                 final Location clone = loc.clone().subtract(0, 1, 0); // Checking block underneath
 
                 // --since this event gets called by movement, we add the player to the set, and when called again we remove if false--
-                if ((loc.getBlock().getType() == Material.AIR)
+                if (!(check.contains(p)) && (loc.getBlock().getType() == Material.AIR)
                         && !(loc.getBlock().isBuildable())
                         && !(loc.getBlock().isSolid())
                         && !(p.isJumping())
@@ -51,11 +51,9 @@ public class Fly implements Listener {
                 if (check.contains(p)) {
                     new BukkitRunnable() {
                         public void run() { // running a task with a delay to try and prevent player from ascending.
-
-                            if (loc.getY() < clone.getY()) {
+                            if (p.getLocation().getBlockY() < prevLoc.getBlockY()) {
                                 check.remove(p);
                             }
-
                             if (!(p.isJumping())
                                     // --Getting blocks within a 1 block radius around players, and checking to make sure it's a solid block--
                                     && !(u.blockRadIsBlock(loc))
@@ -63,9 +61,10 @@ public class Fly implements Listener {
                                     && !(loc.getBlock().isBuildable())
                                     && !(loc.getBlock().isSolid())
                                     && !(p.getFallDistance() > 0)
+                                    && !(p.getLocation().getBlockY() < prevLoc.getBlockY())
                                     && !(p.isOnGround())
                                     && (loc.subtract(0, 1, 0).getBlock().getType() == Material.AIR)
-                                    && (p.getLocation().subtract(0, 6, 0).getBlock().getType() == Material.AIR)) { // if player ascends cancel
+                                    && (p.getLocation().subtract(0, 5, 0).getBlock().getType() == Material.AIR)) { // if player ascends cancel
 
                                 for (int y = prevLoc.getBlockY(); y > 0; y--) { // get current Y coordinate, go down until we hit bedrock (0)
                                     if (prevLoc.subtract(0, 1, 0).getBlock().getType() == Material.AIR)
@@ -79,7 +78,7 @@ public class Fly implements Listener {
                                 check.remove(p);
                             }
                         }
-                    }.runTaskLater(plugin, 30L);
+                    }.runTaskLater(plugin, 20L);
                 }
             }
         }

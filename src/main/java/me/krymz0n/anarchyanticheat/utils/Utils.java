@@ -58,4 +58,5 @@ public class Utils {
                 || !(loc.add(1, 0, 0).getBlock().getType() == Material.AIR)
                 || !(loc.add(0, 0, 1).getBlock().getType() == Material.AIR);
     }
+
 }

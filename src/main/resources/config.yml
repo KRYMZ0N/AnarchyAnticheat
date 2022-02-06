@@ -1,5 +1,7 @@
 # AnarchyAntiCheat
 PatchFlight: true # Prevent flying
+PatchSpeed: true
+Distance: 20
 
 PreventBurrow: true # Prevent players from going inside of blocks
 BurrowDamageAmp: 2 # 1 = half a heart
