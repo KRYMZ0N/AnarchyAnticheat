@@ -28,6 +28,9 @@ public class BedrockBurrow implements Listener {
                     && b.isOccluding()) {
 
                 evt.getPlayer().damage((float) plugin.getConfig().getInt("BurrowDamageAmp") * 0.5);
+                if (plugin.getConfig().getBoolean("TeleportBurrow")) {
+                    evt.getPlayer().teleport(loc.add(0, 1, 0));
+                }
             }
         }
     }
