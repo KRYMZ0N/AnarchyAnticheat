@@ -48,7 +48,6 @@ public class Speed implements Listener {
                                 p.teleport(prevLoc);
                                 check.remove(p);
                             } else {
-                                p.sendMessage(String.valueOf(p.getLocation().distance(prevLoc)));
                                 check.remove(p);
                             }
                         }

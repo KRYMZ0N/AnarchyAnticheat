@@ -27,6 +27,7 @@ public class CrystalAura implements Listener {
         this.plugin = plugin;
     }
 
+    /*
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent evt) {
         if (plugin.getConfig().getBoolean("LimitCrystalAura")) {
@@ -73,15 +74,18 @@ public class CrystalAura implements Listener {
         }
     }
 
+     */
+
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent evt) {
         if (evt.getEntity().getType().equals(EntityType.ENDER_CRYSTAL)) {
             if (evt.getDamager() instanceof Player) {
                 Player p = (Player) evt.getDamager();
 
-                if (!players.contains(p)) {
+                if (players.contains(p)) {
                     evt.setCancelled(true);
                 } else {
+                    players.add(p);
                     Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> players.remove(p), (long) plugin.getConfig().getInt("CrystalDelay"));
 
                 }
