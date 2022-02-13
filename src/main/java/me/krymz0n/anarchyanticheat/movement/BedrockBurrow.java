@@ -24,8 +24,7 @@ public class BedrockBurrow implements Listener {
             int z = loc.getBlockZ();
             Material b = evt.getPlayer().getLocation().getWorld().getBlockAt(x, y, z).getType();
 
-            if (!b.equals(Material.AIR)
-                    && b.isOccluding()) {
+            if (!b.equals(Material.AIR) && !b.equals(Material.SOUL_SAND) && !isGravityBlocks(b) && b.isOccluding()) {
 
                 evt.getPlayer().damage((float) plugin.getConfig().getInt("BurrowDamageAmp") * 0.5);
                 if (plugin.getConfig().getBoolean("TeleportBurrow")) {
@@ -33,5 +32,9 @@ public class BedrockBurrow implements Listener {
                 }
             }
         }
+    }
+
+    public boolean isGravityBlocks(Material b) {
+        return b.equals(Material.SAND) || b.equals(Material.GRAVEL);
     }
 }

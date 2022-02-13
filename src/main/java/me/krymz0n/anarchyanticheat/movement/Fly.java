@@ -8,13 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 
 public class Fly implements Listener {
     private final Main plugin;
-    HashSet<Player> check = new HashSet<>();
+    private final HashSet<Player> check = new HashSet<>();
     Utils u = new Utils();
 
     public Fly(Main plugin) {
@@ -25,8 +26,9 @@ public class Fly implements Listener {
     public void onPlayerMovement(PlayerMoveEvent evt) {
         if (plugin.getConfig().getBoolean("PatchFlight")) {
             Player p = evt.getPlayer();
+            PlayerTeleportEvent e = new PlayerTeleportEvent(p, evt.getFrom(), evt.getTo());
 
-            if (!p.isGliding()) {
+            if (!p.isGliding() && !e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL)) {
                 Location loc = p.getLocation().subtract(0, 1, 0);
                 final Location prevLoc = loc;
                 //Location newLoc = new Location(p.getWorld(), loc.getX(), loc.getY(), loc.getZ());
@@ -51,8 +53,14 @@ public class Fly implements Listener {
                 if (check.contains(p)) {
                     new BukkitRunnable() {
                         public void run() { // running a task with a delay to try and prevent player from ascending.
+
+                            if (p.isGliding()) {
+                                check.remove(p);
+                                return;
+                            }
                             if (p.getLocation().getBlockY() < prevLoc.getBlockY()) {
                                 check.remove(p);
+                                return;
                             }
                             if (!(p.isJumping())
                                     // --Getting blocks within a 1 block radius around players, and checking to make sure it's a solid block--
